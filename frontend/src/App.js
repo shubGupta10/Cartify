@@ -13,7 +13,7 @@ const App = () => {
           <Homescreen/>
         </Container>
       </main>
-      {/* <Footer/> */}
+      <Footer/>
     </>
   );
 };
