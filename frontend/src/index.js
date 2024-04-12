@@ -6,10 +6,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Homescreen from './screens/Homescreen';
+import ProductPages from './screens/ProductPages';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/"  element={<App/>}>
       <Route index={true} path="/" element={<Homescreen/>} />
+      <Route path='/product/:id' element={<ProductPages/>} />
     </Route>
   )
 )
