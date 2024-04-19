@@ -52,7 +52,7 @@ const ProductScreen = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <Row>
+        <Row >
           <Col md={5}>
             <Image src={product.image} alt={product.name} fluid />
           </Col>
@@ -74,7 +74,7 @@ const ProductScreen = () => {
             </ListGroup>
           </Col>
           <Col md={3}>
-            <Card>
+            <Card  >
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
