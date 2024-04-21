@@ -20,8 +20,7 @@ const authUser = asyncHandler(async (req,res) => {
             sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000
         });
-
-
+        
         res.json({
             _id: user._id,
             name: user.name,
