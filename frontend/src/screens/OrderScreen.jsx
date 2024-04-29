@@ -1,4 +1,4 @@
-import {Link, useParams} from 'react-router-dom'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import {Row, Col, ListGroup, Image, Form, Button, Card} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -9,8 +9,13 @@ const OrderScreen = () => {
 
     
     const {id: orderId} = useParams();
+    const navigate = useNavigate();
 
     const {data: order, refetch, isLoading, error,} = useGetOrderDetailsQuery(orderId);
+
+    const paymentdoneScreen = () => {
+        navigate('/paymentdone')
+    }
 
   return isLoading ? <Loader/> : error ? <Message variant='danger' /> : (
     <>
@@ -109,8 +114,7 @@ const OrderScreen = () => {
                             <Col>${order.totalPrice}</Col>
                         </Row>
                     </ListGroup.Item>
-                    {/* Pay order  */}
-                    {/* mark order  */}
+                  
                 </ListGroup>
             </Card>
         </Col>

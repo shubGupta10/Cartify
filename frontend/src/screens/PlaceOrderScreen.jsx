@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
@@ -16,6 +16,7 @@ const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const [processingPayment, setProcessingPayment] = useState(false);
 
   useEffect(() => {
     if (!cart.shippingAddress.address) {
@@ -26,21 +27,31 @@ const PlaceOrderScreen = () => {
   }, [cart.paymentMethod, cart.shippingAddress.address, navigate]);
 
   const placeOrderHandler = async () => {
-    try {
-      const res = await createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
-      }).unwrap();
-      dispatch(clearCartItems());
-      navigate(`/order/${res.id}`);
-    } catch (error) {
-      toast.error(error);
-    }
+    // try {
+    //   const res = await createOrder({
+    //     orderItems: cart.cartItems,
+    //     shippingAddress: cart.shippingAddress,
+    //     paymentMethod: cart.paymentMethod,
+    //     itemsPrice: cart.itemsPrice,
+    //     shippingPrice: cart.shippingPrice,
+    //     taxPrice: cart.taxPrice,
+    //     totalPrice: cart.totalPrice,
+    //   }).unwrap();
+    //   dispatch(clearCartItems());
+    //   // navigate(`/order/${res.id}`);
+    //   navigate('/paymentdone')
+    // } catch (error) {
+    //   toast.error(error);
+    // }
+  
+    setProcessingPayment(true);
+
+    setTimeout(() => {
+      setProcessingPayment(false);
+      navigate('/paymentdone');
+    }, 5000);
+
+    
   };
 
   return (
@@ -144,9 +155,9 @@ const PlaceOrderScreen = () => {
                   disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >
-                  Place Order
+                  {processingPayment ? 'Processing...' : 'Proceed to Pay'}
                 </Button>
-
+                <Loader/>
                 {isLoading && <Loader />}
               </ListGroup.Item>
             </ListGroup>
