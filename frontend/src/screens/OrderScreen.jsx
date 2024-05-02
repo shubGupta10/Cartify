@@ -1,11 +1,15 @@
 import {Link, useNavigate, useParams} from 'react-router-dom'
-import {Row, Col, ListGroup, Image, Form, Button, Card} from 'react-bootstrap'
+import {Row, Col, ListGroup, Image, Form, Button, Card, Toast} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {useGetOrderDetailsQuery} from '../slices/OrdersApiSlice'
+import {useGetOrderDetailsQuery, useDelievredOrderMutation} from '../slices/OrdersApiSlice'
+import {toast} from 'react-toastify'
 
 
 const OrderScreen = () => {
+
+
+    const [deliveredOrder, {isLoading: loadingDeliver}] = useDelievredOrderMutation();
 
     
     const {id: orderId} = useParams();
@@ -15,6 +19,17 @@ const OrderScreen = () => {
 
     const paymentdoneScreen = () => {
         navigate('/paymentdone')
+    }
+
+
+    const deliveredOrderHandler =  async () => {
+        try {
+            await deliveredOrder(orderId);
+            refetch();
+            toast.success('Order delivered');
+        } catch (err) {
+            toast.error(err?.data?.message || err.message)
+        }
     }
 
   return isLoading ? <Loader/> : error ? <Message variant='danger' /> : (
@@ -114,7 +129,14 @@ const OrderScreen = () => {
                             <Col>${order.totalPrice}</Col>
                         </Row>
                     </ListGroup.Item>
-                  
+                  {loadingDeliver && <Loader/>}
+                  {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <ListGroup.Item>
+                        <Button type='button' className='btn btn-block' onClick={deliveredOrderHandler}>
+                            Mark as Delivered
+                        </Button>
+                    </ListGroup.Item>
+                  ) }
                 </ListGroup>
             </Card>
         </Col>
