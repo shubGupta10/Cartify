@@ -17,4 +17,22 @@ const getProductById = asyncHandler(async (req, res) => {
   throw new Error('Resource not found');
 });
 
-export { getProducts, getProductById };
+
+const createProduct = asyncHandler(async (req, res) => {
+  const product = new Product({
+    name: "Sample name",
+    price: 0,
+    user: req.user._id,
+    image: '/images/sample.jpg',
+    brand: 'Sample brand',
+    category: 'Sample category',
+    countInStock: 0,
+    numReviews: 0,
+    description: 'Sample description',
+  })
+
+  const createProduct = await product.save();
+  res.status(201).json(createProduct);
+});
+
+export { getProducts, getProductById, createProduct };

@@ -4,13 +4,30 @@ import {Table, Button, Row, Col, Tab} from 'react-bootstrap'
 import {FaTimes, FaEdit, FaTrash} from 'react-icons/fa'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {useGetProductQuery} from '../slices/productsApiSlice'
+import {toast} from 'react-toastify'
+import {useGetProductQuery, useCreateProductMutation} from '../slices/productsApiSlice'
 
 const ProductListScreen = () => {
     const {data: products, isLoading, error } = useGetProductQuery();
+
+    const [createPorduct, {isLoading: loadingCreate}] = useCreateProductMutation();
+
     const deleteHandler = (id) => {
         console.log('delete', id);
     }
+
+
+    const createProductHandler =  async () => {
+        if(window.confirm("Are you sure you want to create a new Product?")) {
+            try {
+                await createPorduct();
+                refetch();
+            } catch (error) {
+                toast.error(err?.data?.message || err.error);
+            }
+        }
+    }
+
  
   return (
     <>
@@ -19,11 +36,12 @@ const ProductListScreen = () => {
         <h1>Products</h1>
         </Col>
         <Col className='text-end'>
-        <Button className='btn-sm m-3'>
+        <Button className='btn-sm m-3' onClick={createProductHandler}>
             <FaEdit/> Create Product
         </Button>
         </Col>
     </Row>
+    {loadingCreate && <Loader/>}
     {isLoading ? <Loader/> : error ? <Message variant='danger'>
     {error}</Message> : (
         <>
