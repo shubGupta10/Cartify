@@ -1,14 +1,14 @@
 import React from 'react'
 import {LinkContainer} from 'react-router-bootstrap'
 import {Table, Button, Row, Col, Tab} from 'react-bootstrap'
-import {FaTimes, FaEdit, FaTrash} from 'react-icons/fa'
+import {FaEdit, FaTrash} from 'react-icons/fa'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {toast} from 'react-toastify'
-import {useGetProductQuery, useCreateProductMutation, useDeleteProductMutation} from '../slices/productsApiSlice'
+import {useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation} from "../slices/productsApiSlice"
 
 const ProductListScreen = () => {
-    const {data: products, isLoading, error } = useGetProductQuery();
+    const {data: products, isLoading, error, refetch } = useGetProductsQuery();
 
     const [createPorduct, {isLoading: loadingCreate}] = useCreateProductMutation();
 
@@ -19,7 +19,7 @@ const ProductListScreen = () => {
             try {
                 await deleteProduct(id);
                 refetch();
-            } catch (error) {
+            } catch (err) {
               toast.error(err?.data?.message || err.error);  
             }
         }
@@ -31,7 +31,7 @@ const ProductListScreen = () => {
             try {
                 await createPorduct();
                 refetch();
-            } catch (error) {
+            } catch (err) {
                 toast.error(err?.data?.message || err.error);
             }
         }
@@ -69,7 +69,7 @@ const ProductListScreen = () => {
             </thead>
             <tbody>
                 {products.map((products) => {
-                    <tr key={product._id}>
+                    <tr key={products._id}>
                         <td>{products._id}</td>
                         <td>{products.name}</td>
                         <td>{products.price}</td>
@@ -82,7 +82,7 @@ const ProductListScreen = () => {
                             </Button>
                             </LinkContainer>
                             <Button variant='danger' className='btn-sm'
-                            onClick={() => deleteHandler(product._id)}
+                            onClick={() => deleteHandler(products._id)}
                             >
                                 <FaTrash style={{color: 'white'}}/>
                             </Button>
