@@ -4,6 +4,7 @@ import Product from '../components/Product.jsx'
 import Loader from '../components/Loader.jsx'
 import Message from '../components/Message.jsx'
 import { useGetProductsQuery } from '../slices/productsApiSlice.js'
+import Paginate from '../components/Paginate.jsx'
 
 const Homescreen = () => {
   const {pageNumber} = useParams();
@@ -21,6 +22,11 @@ const Homescreen = () => {
           </Col>
       ))}
       </Row>
+      <Paginate
+            pages={data.pages}
+            page={data.page}
+            keyword={keyword ? keyword : ''}
+          />
     </>) }
     </>
   )
