@@ -1,9 +1,10 @@
 import {Link, useNavigate, useParams} from 'react-router-dom'
-import {Row, Col, ListGroup, Image, Button, Card, Toast} from 'react-bootstrap'
+import {Row, Col, ListGroup, Image, Button, Card} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {useGetOrderDetailsQuery, useDelievredOrderMutation} from '../slices/OrdersApiSlice'
 import {toast} from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 
 const OrderScreen = () => {
@@ -14,6 +15,8 @@ const OrderScreen = () => {
     
     const {id: orderId} = useParams();
     const navigate = useNavigate();
+
+    const { userInfo } = useSelector((state) => state.auth);
 
     const {data: order, refetch, isLoading, error,} = useGetOrderDetailsQuery(orderId);
 
