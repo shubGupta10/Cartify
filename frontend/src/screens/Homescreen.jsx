@@ -7,8 +7,8 @@ import { useGetProductsQuery } from '../slices/productsApiSlice.js'
 import Paginate from '../components/Paginate.jsx'
 
 const Homescreen = () => {
-  const {pageNumber} = useParams();
-  const {data, isLoading, error} = useGetProductsQuery({pageNumber}); 
+  const {pageNumber, keyword} = useParams();
+  const {data, isLoading, error} = useGetProductsQuery({keyword,pageNumber}); 
   return (
     <>
     {isLoading ? (
