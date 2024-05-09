@@ -8,6 +8,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import {HelmetProvider} from 'react-helmet-async';
 import Homescreen from './screens/Homescreen';
 import ProductPages from './screens/ProductPages';
 import CartScreen from './screens/CartScreen.jsx';
@@ -63,9 +64,11 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <HelmetProvider>
     <Provider store={store}>
     <RouterProvider router={router} />
     </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
 
