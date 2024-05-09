@@ -5,13 +5,14 @@ import Loader from '../components/Loader.jsx'
 import Message from '../components/Message.jsx'
 import { useGetProductsQuery } from '../slices/productsApiSlice.js'
 import Paginate from '../components/Paginate.jsx'
+import ProductCarousel from '../components/ProductCarousel.jsx'
 
 const Homescreen = () => {
   const {pageNumber, keyword} = useParams();
   const {data, isLoading, error} = useGetProductsQuery({keyword,pageNumber}); 
   return (
     <>
-    {keyword && <Link to="/" className='btn btn-light mb-4'>Back</Link>}
+    {!keyword ? <ProductCarousel/> : <Link to="/" className='btn btn-light mb-4'>Back</Link>}
     {isLoading ? (
       <Loader/>
     ): error ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>) : (<>
